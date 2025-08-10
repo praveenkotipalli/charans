@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Phishing Detection System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-bg {
+            background-color: #1a202c;
+            background-image: radial-gradient(circle at 50% 0, rgba(74, 85, 104, 0.2) 0%, rgba(17, 24, 39, 0) 70%);
+        }
+        .result-card {
+            transition: all 0.3s ease-in-out;
+        }
+        .tab-button {
+            transition: all 0.2s ease-in-out;
+        }
+        .tab-button.active {
+            background-color: #4f46e5;
+            color: #ffffff;
+        }
+        .tab-panel {
+            display: none;
+        }
+        .tab-panel.active {
+            display: block;
+        }
+        .analyze-button:disabled {
+            background-color: #4a5568;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <!-- Navigation Bar -->
+    <nav class="bg-gray-900/80 backdrop-blur-md shadow-lg fixed w-full z-20 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <svg class="h-8 w-8 text-indigo-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <span class="ml-3 text-xl font-bold text-white">SecureAI</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#home" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="#scanner" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Threat Scanner</a>
+                        <a href="#features" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Features</a>
+                        <a href="#contact" class="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#home" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="#scanner" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Threat Scanner</a>
+                <a href="#features" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Features</a>
+                <a href="#contact" class="text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-bg pt-32 pb-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl">
+                The Future of Phishing Defense is Here
+            </h1>
+            <p class="mt-5 max-w-md mx-auto text-lg text-gray-400 sm:text-xl md:mt-5 md:max-w-3xl">
+                Our AI-powered system intelligently detects and neutralizes phishing threats in real-time, protecting your organization from sophisticated cyber attacks before they can cause harm.
+            </p>
+            <div class="mt-8 flex justify-center">
+                <div class="inline-flex rounded-md shadow">
+                    <a href="#scanner" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                        Try the Scanners
+                    </a>
+                </div>
+                <div class="ml-3 inline-flex rounded-md shadow">
+                    <a href="#contact" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-400 bg-gray-800 hover:bg-gray-700">
+                        Request a Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Live Threat Scanner Section -->
+    <section id="scanner" class="py-20 bg-gray-800">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-indigo-400 font-semibold tracking-wide uppercase">Live AI Threat Scanner</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                    Analyze URLs and Email Content
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-400 lg:mx-auto">
+                    Select a tool to get a real-time analysis from our AI model.
+                </p>
+            </div>
+            
+            <div class="mt-10">
+                <!-- Tabs -->
+                <div class="mb-4 border-b border-gray-700 flex justify-center">
+                    <button class="tab-button active py-2 px-6 font-medium text-gray-300 rounded-t-lg" data-tab="url-scanner">URL Scanner</button>
+                    <button class="tab-button py-2 px-6 font-medium text-gray-300 rounded-t-lg" data-tab="email-scanner">Email Analyzer</button>
+                </div>
+
+                <!-- URL Scanner Panel -->
+                <div id="url-scanner-panel" class="tab-panel active">
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="url" id="url-input" class="w-full px-4 py-3 rounded-md bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="e.g., https://example.com">
+                        <button id="check-url-btn" class="analyze-button w-full sm:w-auto px-6 py-3 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500 transition-colors">
+                            <span class="btn-text">Analyze URL</span>
+                            <span class="btn-loader hidden">
+                                <svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Email Scanner Panel -->
+                <div id="email-scanner-panel" class="tab-panel">
+                     <div class="flex flex-col gap-2">
+                        <textarea id="email-input" class="w-full px-4 py-3 rounded-md bg-gray-900 text-white border border-gray-700 focus:ring-2 focus:ring-indigo-500 focus:outline-none" rows="8" placeholder="Paste the full text content of the suspicious email here..."></textarea>
+                        <button id="check-email-btn" class="analyze-button w-full px-6 py-3 font-semibold text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-indigo-500 transition-colors">
+                            <span class="btn-text">Analyze Email</span>
+                             <span class="btn-loader hidden">
+                                <svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="result-container" class="mt-8 hidden">
+                <!-- AI Results will be injected here -->
+            </div>
+             <div class="mt-8 text-center text-sm text-gray-500">
+                <p><strong>Disclaimer:</strong> This tool uses a generative AI model for analysis. The results are for educational purposes and may not be 100% accurate. Do not rely on this tool for real-world security decisions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-indigo-400 font-semibold tracking-wide uppercase">Features</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                    Everything You Need to Stay Secure
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-400 lg:mx-auto">
+                    Our platform is packed with features designed to provide robust, intelligent, and user-friendly phishing protection.
+                </p>
+            </div>
+
+            <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                 <!-- Feature 1 -->
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-12v4m-2-2h4m5 6v4m-2-2h4M17 3l-4.5 4.5M12 3l-4.5 4.5M12 17l-4.5 4.5M17 17l-4.5 4.5" /></svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <dt class="text-lg leading-6 font-medium text-white">
+                            AI-Powered Detection
+                        </dt>
+                        <dd class="mt-2 text-base text-gray-400">
+                            Leverages advanced machine learning and NLP to detect even the most sophisticated, zero-day phishing attacks.
+                        </dd>
+                    </div>
+                </div>
+                <!-- Feature 2 -->
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <dt class="text-lg leading-6 font-medium text-white">
+                            Real-time Protection
+                        </dt>
+                        <dd class="mt-2 text-base text-gray-400">
+                            Scans and blocks malicious links and attachments in real-time, preventing threats before they reach your users.
+                        </dd>
+                    </div>
+                </div>
+                <!-- Feature 3 -->
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <dt class="text-lg leading-6 font-medium text-white">
+                            User-Friendly Dashboard
+                        </dt>
+                        <dd class="mt-2 text-base text-gray-400">
+                            An intuitive dashboard provides clear visibility into threats, trends, and system performance.
+                        </dd>
+                    </div>
+                </div>
+                <!-- Feature 4 -->
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H7a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <dt class="text-lg leading-6 font-medium text-white">
+                            Computer Vision Analysis
+                        </dt>
+                        <dd class="mt-2 text-base text-gray-400">
+                            Identifies brand impersonation by visually analyzing logos and website designs to spot fakes.
+                        </dd>
+                    </div>
+                </div>
+                <!-- Feature 5 -->
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <dt class="text-lg leading-6 font-medium text-white">
+                            Detailed Reporting
+                        </dt>
+                        <dd class="mt-2 text-base text-gray-400">
+                            Generate comprehensive reports on threat activity, user risk, and system effectiveness to inform your security strategy.
+                        </dd>
+                    </div>
+                </div>
+                <!-- Feature 6 -->
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" /></svg>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <dt class="text-lg leading-6 font-medium text-white">
+                            Seamless Integration
+                        </dt>
+                        <dd class="mt-2 text-base text-gray-400">
+                            Easily integrates with your existing email platforms and security infrastructure like Office 365 and Google Workspace.
+                        </dd>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-800">
+        <div class="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="lg:text-center">
+                <h2 class="text-base text-indigo-400 font-semibold tracking-wide uppercase">Contact Us</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">
+                    Get in Touch
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-gray-400 lg:mx-auto">
+                    Have questions or want to see a demo? We'd love to hear from you.
+                </p>
+            </div>
+            <div class="mt-12">
+                <form id="contact-form" class="grid grid-cols-1 gap-y-6">
+                    <div>
+                        <label for="full-name" class="sr-only">Full name</label>
+                        <input type="text" name="full-name" id="full-name" autocomplete="name" class="block w-full shadow-sm py-3 px-4 placeholder-gray-500 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md" placeholder="Full name" required>
+                    </div>
+                    <div>
+                        <label for="email" class="sr-only">Email</label>
+                        <input id="email" name="email" type="email" autocomplete="email" class="block w-full shadow-sm py-3 px-4 placeholder-gray-500 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border-gray-300 rounded-md" placeholder="Email" required>
+                    </div>
+                    <div>
+                        <label for="message" class="sr-only">Message</label>
+                        <textarea id="message" name="message" rows="4" class="block w-full shadow-sm py-3 px-4 placeholder-gray-500 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 border border-gray-300 rounded-md" placeholder="Message" required></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Send Message
+                        </button>
+                    </div>
+                    <div id="form-status" class="text-center"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-base text-gray-400">&copy; 2025 SecureAI Technologies. All rights reserved.</p>
+                <p class="text-sm text-gray-500 mt-2">Vijayawada, Andhra Pradesh, India</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- DOM Elements ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const checkUrlBtn = document.getElementById('check-url-btn');
+        const checkEmailBtn = document.getElementById('check-email-btn');
+        const urlInput = document.getElementById('url-input');
+        const emailInput = document.getElementById('email-input');
+        const resultContainer = document.getElementById('result-container');
+        const contactForm = document.getElementById('contact-form');
+        const formStatus = document.getElementById('form-status');
+        const tabs = document.querySelectorAll('.tab-button');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+
+        // --- Event Listeners ---
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
+                }
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(item => item.classList.remove('active'));
+                tab.classList.add('active');
+                
+                const targetPanelId = tab.getAttribute('data-tab');
+                tabPanels.forEach(panel => {
+                    panel.id === `${targetPanelId}-panel` ? panel.classList.add('active') : panel.classList.remove('active');
+                });
+                resultContainer.classList.add('hidden');
+            });
+        });
+
+        checkUrlBtn.addEventListener('click', () => handleAnalysis(checkUrlBtn, urlInput, 'url'));
+        checkEmailBtn.addEventListener('click', () => handleAnalysis(checkEmailBtn, emailInput, 'email'));
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            formStatus.innerHTML = '<p class="text-green-400">Thank you! Your message has been sent.</p>';
+            contactForm.reset();
+            setTimeout(() => { formStatus.innerHTML = ''; }, 5000);
+        });
+
+        // --- Core AI Analysis Logic ---
+
+        async function handleAnalysis(button, inputElement, analysisType) {
+            const inputValue = inputElement.value.trim();
+            if (!inputValue) {
+                displayError(`Please enter content to analyze.`);
+                return;
+            }
+            if (analysisType === 'url') {
+                 try { new URL(inputValue); } catch (_) {
+                    displayError("Invalid URL format. Please include http:// or https://");
+                    return;
+                }
+            }
+
+            toggleLoading(button, true);
+            
+            const prompt = createPrompt(inputValue, analysisType);
+
+            try {
+                const aiResponse = await callGeminiAPI(prompt);
+                const parsedResponse = JSON.parse(aiResponse);
+                displayResults(analysisType === 'url' ? 'URL Analysis' : 'Email Analysis', parsedResponse.risk_score, parsedResponse.justification);
+            } catch (error) {
+                console.error("AI Analysis Error:", error);
+                displayError("The AI analysis failed. This could be due to a network issue or content policy violation. Please try again.");
+            } finally {
+                toggleLoading(button, false);
+            }
+        }
+        
+        function createPrompt(inputValue, analysisType) {
+            const jsonSchema = `{
+                "risk_score": "A number between 0 (safe) and 100 (high risk)",
+                "justification": "A brief, one-sentence explanation for the score."
+            }`;
+
+            if (analysisType === 'url') {
+                return `Analyze the following URL for phishing indicators. Consider domain structure, brand impersonation (e.g., 'microsft' instead of 'microsoft'), deceptive subdomains, use of IP addresses, and suspicious keywords. If the URL is nonsensical or gibberish, assign a high risk score. Respond in JSON format with this exact schema: ${jsonSchema}. URL: "${inputValue}"`;
+            } else { // email
+                return `Analyze the following email content for phishing tactics. Look for urgent or threatening language, requests for sensitive information (passwords, credit cards), generic greetings, and suspicious links. Respond in JSON format with this exact schema: ${jsonSchema}. Email Content: "${inputValue}"`;
+            }
+        }
+
+        async function callGeminiAPI(prompt) {
+            // NOTE: In a real application, the API key would be handled securely on a backend.
+            // For this self-contained demo, we use a placeholder that will be replaced by the execution environment.
+            const apiKey = "AIzaSyCnUZpj5kJPugkndBf_QzfbIGO-A61PvH4"; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                generationConfig: {
+                    responseMimeType: "application/json",
+                }
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`API call failed with status: ${response.status}`);
+            }
+            
+            const result = await response.json();
+
+            if (result.candidates && result.candidates.length > 0 &&
+                result.candidates[0].content && result.candidates[0].content.parts &&
+                result.candidates[0].content.parts.length > 0) {
+                return result.candidates[0].content.parts[0].text;
+            } else {
+                // Handle cases where the response structure is unexpected or content is missing
+                throw new Error("Invalid response structure from AI model.");
+            }
+        }
+
+        // --- UI Update Functions ---
+
+        function toggleLoading(button, isLoading) {
+            const btnText = button.querySelector('.btn-text');
+            const btnLoader = button.querySelector('.btn-loader');
+            if (isLoading) {
+                button.disabled = true;
+                btnText.classList.add('hidden');
+                btnLoader.classList.remove('hidden');
+            } else {
+                button.disabled = false;
+                btnText.classList.remove('hidden');
+                btnLoader.classList.add('hidden');
+            }
+        }
+
+        function displayError(message) {
+            resultContainer.innerHTML = `<div class="bg-red-900 border border-red-700 text-red-300 px-4 py-3 rounded-lg result-card">${message}</div>`;
+            resultContainer.classList.remove('hidden');
+        }
+
+        function displayResults(analysisType, score, justification) {
+            let scoreColorClass, scoreText;
+            const riskScore = parseInt(score, 10) || 0;
+
+            if (riskScore >= 70) {
+                scoreColorClass = 'text-red-400';
+                scoreText = 'High Risk';
+            } else if (riskScore >= 40) {
+                scoreColorClass = 'text-yellow-400';
+                scoreText = 'Moderate Risk';
+            } else {
+                scoreColorClass = 'text-green-400';
+                scoreText = 'Low Risk';
+            }
+
+            const findingsHtml = `<li class="flex items-start py-2">
+                <svg class="h-5 w-5 ${scoreColorClass} mr-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span>${justification}</span>
+            </li>`;
+
+            const resultsHtml = `
+                <div class="bg-gray-900 rounded-lg shadow-xl p-6 border border-gray-700 result-card">
+                    <div class="flex flex-col md:flex-row items-center justify-between">
+                        <div class="text-center md:text-left mb-4 md:mb-0">
+                            <h3 class="text-lg font-medium text-white">${analysisType} Complete</h3>
+                        </div>
+                        <div class="text-center flex-shrink-0 ml-0 md:ml-6 mt-4 md:mt-0">
+                             <p class="text-sm text-gray-400 uppercase tracking-wider">AI Risk Score</p>
+                             <p class="text-5xl font-bold ${scoreColorClass}">${riskScore}</p>
+                             <p class="font-semibold ${scoreColorClass}">${scoreText}</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-gray-700 my-6"></div>
+                    <div>
+                        <h4 class="text-md font-semibold text-white mb-3">AI Justification:</h4>
+                        <ul class="space-y-2 text-gray-300">${findingsHtml}</ul>
+                    </div>
+                </div>
+            `;
+
+            resultContainer.innerHTML = resultsHtml;
+            resultContainer.classList.remove('hidden');
+        }
+    </script>
+
+</body>
+</html>
